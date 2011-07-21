@@ -57,7 +57,7 @@ static void handle_sigchld(int signum, siginfo_t *siginfo, void *ucontext)
 static void handle_sigint(int signum)
 {
   if (signum == SIGINT) {
-    (void)write(STDOUT, "\n", 2);
+    (void)write(STDOUT, "\n", 1);
     _exit(1);
   }
 }
