@@ -156,7 +156,7 @@ static void add_cmd(const char *name)
 static void add_param(const char *p)
 {
   if (cmds_curr->num_params == (MAX_PARAM - 1)) {
-    fprintf(stderr, "too much parameters");
+    fprintf(stderr, "too much parameters\n");
     exit(1);
   }
   cmds_curr->parameter_list[cmds_curr->num_params++] = strdup(p);
