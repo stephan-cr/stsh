@@ -128,11 +128,11 @@ static void add_cmd(const char *name)
   p = cmds_head;
 
   mem = malloc(sizeof(struct cmds));
-  memset(mem, 0, sizeof(struct cmds));
   if (mem == NULL) {
     fprintf(stderr, "unable to allocate memory\n");
     exit(1);
   }
+  memset(mem, 0, sizeof(struct cmds));
 
   if (p != NULL) {
     while (p->next != NULL) {
