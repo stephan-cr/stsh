@@ -184,7 +184,7 @@ static void yyerror(const char *s)
       fprintf(stderr, "invalid < in command\n");
       break;
     case OUTPUT_REDIRECT:
-      fprintf(stderr, "invalud > in command\n");
+      fprintf(stderr, "invalid > in command\n");
       break;
     case PIPE:
       fprintf(stderr, "invalid | in command\n");
