@@ -22,19 +22,8 @@ cmake_minimum_required(VERSION 2.8.0 FATAL_ERROR)
 
 project(stsh C)
 
-include(FindBISON)
-include(FindFLEX)
-
-find_package(BISON)
-find_package(FLEX)
-
-if (NOT BISON_FOUND)
-message(FATAL_ERROR "bison not found")
-endif (NOT BISON_FOUND)
-
-if (NOT FLEX_FOUND)
-message(FATAL_ERROR "flex not found")
-endif (NOT FLEX_FOUND)
+find_package(BISON REQUIRED)
+find_package(FLEX REQUIRED)
 
 bison_target(parser src/parser.y
   ${CMAKE_CURRENT_BINARY_DIR}/y.tab.c
