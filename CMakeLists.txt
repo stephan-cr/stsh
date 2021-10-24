@@ -18,7 +18,7 @@
 #
 # The GNU General Public License is contained in the file COPYING.
 
-cmake_minimum_required(VERSION 2.8.0 FATAL_ERROR)
+cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
 
 project(stsh C)
 
