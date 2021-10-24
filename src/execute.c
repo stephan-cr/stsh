@@ -94,11 +94,9 @@ void execute(const struct cmds *cmd, const int background)
               die_perror("setpgid2");
           }
         }
-        /* int execve(const char *filename, char *const
-         * argv[]); */
-        (void)execvp(curr_cmd->name,
-               curr_cmd->parameter_list);
-        die_perror("execve");
+
+        (void)execvp(curr_cmd->name, curr_cmd->parameter_list);
+        die_perror("execvp");
       default:
         /* Parent */
         if (background) {
@@ -135,9 +133,7 @@ void execute(const struct cmds *cmd, const int background)
 
 void catch_background_process(const pid_t pid)
 {
-  int child_pgid;
-
-  child_pgid = getpgid(pid);
+  int child_pgid = getpgid(pid);
   if ((getpgrp() != child_pgid) && (child_pgid != -1)) {
     if (waitpid(pid, NULL, WNOHANG) == -1)
       die_perror("waitpid in sighandler");
