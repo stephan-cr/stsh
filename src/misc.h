@@ -32,6 +32,12 @@
 #define NORETURN
 #endif
 
+#ifdef __GNUC__
+#define UNUSED(x) x __attribute__((unused))
+#else
+#define UNUSED(x) x
+#endif
+
 void die(const char *message) NORETURN;
 void die_perror(const char *message) NORETURN;
 

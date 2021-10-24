@@ -24,6 +24,7 @@
 #include <string.h>
 #include <unistd.h>
 #include "execute.h"
+#include "misc.h"
 #include "parser.h"
 #include "sig.h"
 #include "y.tab.h"
@@ -47,12 +48,9 @@ static void free_cmds_head(struct cmds *head)
   }
 }
 
-int main(int argc, char **argv)
+int main(int UNUSED(argc), char **UNUSED(argv))
 {
   int ret, c = 0;
-
-  argc = argc;
-  argv = argv;
 
   install_sighandler();
   cmds_head = NULL;

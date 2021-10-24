@@ -45,10 +45,9 @@ void unmask_sigchld()
   }
 }
 
-static void handle_sigchld(int signum, siginfo_t *siginfo, void *ucontext)
+static void handle_sigchld(int signum, siginfo_t *siginfo, void *UNUSED(ucontext))
 {
   /* this parameter is unused, selfassign it to avoid compiler warnings */
-  ucontext = ucontext;
   if (signum == SIGCHLD) {
     catch_background_process(siginfo->si_pid);
   }
