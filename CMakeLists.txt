@@ -60,14 +60,14 @@ target_link_libraries(stsh
 set(CPACK_GENERATOR "DEB")
 set(CPACK_SOURCE_GENERATOR "DEB")
 
-set(CONTACT "http://bitbucket.org/stephan_cr/stsh")
+set(CONTACT "https://github.com/stephan-cr/stsh")
 set(CPACK_PACKAGE_CONTACT "${CONTACT}")
 set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "stsh - another shell implementation")
 set(CPACK_PACKAGE_VERSION "0.0.1")
 
 list(APPEND CPACK_SOURCE_IGNORE_FILES "~$")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "/\\\\.hg/")
-list(APPEND CPACK_SOURCE_IGNORE_FILES "\\\\.hg.*")
+list(APPEND CPACK_SOURCE_IGNORE_FILES "/\\\\.git/")
+list(APPEND CPACK_SOURCE_IGNORE_FILES "\\\\.git.*")
 list(APPEND CPACK_SOURCE_IGNORE_FILES "/build/")
 
 # debian specific
