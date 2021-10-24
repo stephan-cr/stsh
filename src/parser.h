@@ -24,7 +24,7 @@
 
 #include "execute.h"
 
-struct cmds *cmds_head;
-int background;
+extern struct cmds *cmds_head;
+extern int background;
 
 #endif

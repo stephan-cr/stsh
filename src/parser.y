@@ -38,6 +38,9 @@ static void set_input_redirect(const char *filename);
 static void set_output_redirect(const char *filename);
 static void yyerror(const char *s);
 
+struct cmds *cmds_head = NULL;
+int background = 0;
+
 %}
 
 %token
