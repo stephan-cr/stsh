@@ -44,7 +44,7 @@ set(CMAKE_C_COMPILER "diet")
 set(CMAKE_C_FLAGS "gcc")
 endif (DEFINED DIET)
 
-add_definitions(-Wall -Wextra -Werror -O2 -pipe)
+add_definitions(-Wall -Wextra -Wno-unused-result -Werror -O2 -pipe)
 
 add_executable(stsh
   src/execute.c
