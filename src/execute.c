@@ -24,8 +24,8 @@
 #define __USE_XOPEN_EXTENDED
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <unistd.h>
-#include <wait.h>
 #include "execute.h"
 #include "misc.h"
 
