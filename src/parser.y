@@ -43,6 +43,7 @@ int background = 0;
 
 %}
 
+%locations
 %token
 INPUT_REDIRECT
 OUTPUT_REDIRECT
@@ -184,22 +185,27 @@ static void yyerror(const char *s)
 {
   switch (yychar) {
     case INPUT_REDIRECT:
-      fprintf(stderr, "invalid < in command\n");
+      fprintf(stderr, "invalid < in command (column %d)\n",
+              yylloc.first_column);
       break;
     case OUTPUT_REDIRECT:
-      fprintf(stderr, "invalid > in command\n");
+      fprintf(stderr, "invalid > in command (column %d)\n",
+              yylloc.first_column);
       break;
     case PIPE:
-      fprintf(stderr, "invalid | in command\n");
+      fprintf(stderr, "invalid | in command (column %d)\n",
+              yylloc.first_column);
       break;
     case BACKGROUND:
-      fprintf(stderr, "invalid & in command\n");
+      fprintf(stderr, "invalid & in command (column %d)\n",
+              yylloc.first_column);
       break;
     case REST:
-      fprintf(stderr, "character \"%s\" not allowed\n",
-        yylval);
+      fprintf(stderr, "character \"%s\" not allowed (column %d)\n",
+              yylval, yylloc.first_column);
       break;
     default:
-      fprintf(stderr, "%s: Invalid command\n", s);
+      fprintf(stderr, "%s: Invalid command (column %d)\n",
+              s, yylloc.first_column);
   }
 }

@@ -1,3 +1,4 @@
+/* -*- mode: c-mode -*- */
 /*
  * Copyright (C) 2005, 2011 Stephan Creutz
  *
@@ -32,7 +33,24 @@
 
 int pipe_last = 1;
 
+/* https://stackoverflow.com/a/22125500/13713769 */
+#define YY_USER_ACTION                           \
+  do {                                           \
+    yylloc.first_line = yylloc.last_line;        \
+    yylloc.first_column = yylloc.last_column;    \
+    for (size_t i = 0; yytext[i] != '\0'; i++) { \
+      if (yytext[i] == '\n') {                   \
+        yylloc.last_line++;                      \
+        yylloc.last_column = 0;                  \
+      } else {                                   \
+        yylloc.last_column++;                    \
+      }                                          \
+    }                                            \
+  } while (0);
+
 %}
+
+%option yylineno
 
 valid_chars [A-Za-z0-9\./\-+@,_%=]
 
