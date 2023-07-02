@@ -1,4 +1,4 @@
-/* -*- mode: c-mode -*- */
+/* -*- mode: c -*- */
 /*
  * Copyright (C) 2005, 2011 Stephan Creutz
  *
