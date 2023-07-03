@@ -52,6 +52,10 @@ int main(int UNUSED(argc), char **UNUSED(argv))
 {
   int ret, c = 0;
 
+#if defined(YYDEBUG) && YYDEBUG == 1
+  yydebug = 1;
+#endif
+
   install_sighandler();
   cmds_head = NULL;
   for (;;) {

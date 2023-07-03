@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2005, 2011 Stephan Creutz
+ * Copyright (C) 2005 - 2023 Stephan Creutz
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -50,13 +50,19 @@ OUTPUT_REDIRECT
 PIPE
 BACKGROUND
 PARAMETER
-FIRST_COMMAND_NAME
 COMMAND_NAME
 REST
+NEWLINE
+
+%initial-action
+{
+  init();
+};
+
 %start S
 %%
-S   : { init(); } first_command { YYACCEPT; }
-    | /**/
+S   : first_command NEWLINE { YYACCEPT; }
+    | %empty
     | error { cleanup(); YYABORT; }
     ;
 

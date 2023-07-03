@@ -22,12 +22,20 @@ cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
 
 project(stsh C)
 
+option(BISON_DEBUG "enable bison debug tracing" OFF)
+
 find_package(BISON REQUIRED)
 find_package(FLEX REQUIRED)
 
+if (BISON_DEBUG)
+  set(bison_compile_flags "-v -d -Wall --debug --graph")
+else ()
+  set(bison_compile_flags "-v -d -Wall")
+endif ()
+
 bison_target(parser src/parser.y
   ${CMAKE_CURRENT_BINARY_DIR}/y.tab.c
-  COMPILE_FLAGS "-y -v -d")
+  COMPILE_FLAGS "${bison_compile_flags}")
 # "--nounput" is for a cleaner compilation, but not all versions of flex support
 # it
 flex_target(lexer src/lexer.l

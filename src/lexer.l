@@ -61,7 +61,7 @@ valid_chars [A-Za-z0-9\./\-+@,_%=]
 \n		{
 			/* reset state before we finish */
 			pipe_last = 1;
-			return(0);
+			return(NEWLINE);
 		}
 {valid_chars}+	{
 			yylval = yytext;
