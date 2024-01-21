@@ -40,7 +40,7 @@ bison_target(parser src/parser.y
 # it
 flex_target(lexer src/lexer.l
   ${CMAKE_CURRENT_BINARY_DIR}/lexer.c
-  COMPILE_FLAGS "--nounput -X -Cr -DYY_NO_INPUT")
+  COMPILE_FLAGS "--nounput -X -Cr -DYY_NO_INPUT --header-file=${CMAKE_CURRENT_BINARY_DIR}/lexer.h")
 add_flex_bison_dependency(lexer parser)
 
 include_directories(${CMAKE_SOURCE_DIR}/src)
@@ -52,7 +52,7 @@ set(CMAKE_C_COMPILER "diet")
 set(CMAKE_C_FLAGS "gcc")
 endif (DEFINED DIET)
 
-add_definitions(-Wall -Wextra -Wno-unused-result -Werror -O2 -pipe)
+add_definitions(-Wall -Wextra -Wconversion -Wno-unused-result -Werror -O2 -pipe)
 
 add_executable(stsh
   src/execute.c

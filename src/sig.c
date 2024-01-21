@@ -19,12 +19,13 @@
  * The GNU General Public License is contained in the file COPYING.
  */
 
-#include <signal.h>
-#include <string.h>
-#include <unistd.h>
 #include "execute.h"
 #include "misc.h"
 #include "sig.h"
+
+#include <signal.h>
+#include <string.h>
+#include <unistd.h>
 
 static sigset_t chld_set;
 

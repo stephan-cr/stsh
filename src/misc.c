@@ -19,10 +19,11 @@
  * The GNU General Public License is contained in the file COPYING.
  */
 
+#include "misc.h"
+
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include "misc.h"
 
 void die(const char *message)
 {

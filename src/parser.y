@@ -21,14 +21,20 @@
 
 %{
 
-#define YYSTYPE char *
+#include "parser.h"
+
+#include "execute.h"
+#include "misc.h"
+
+#include "y.tab.h"
+#include "lexer.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "parser.h"
 
 /* forward declarations to avoid compiler warnings */
-extern int yylex();
+extern int yylex(YYSTYPE* yylvalp, YYLTYPE* yyllocp, yyscan_t scanner);
 static void init();
 static void cleanup();
 static void add_cmd(const char *name);
@@ -36,14 +42,21 @@ static void add_param(const char *p);
 static void set_background();
 static void set_input_redirect(const char *filename);
 static void set_output_redirect(const char *filename);
-static void yyerror(const char *s);
+static void yyerror(YYLTYPE *locp, yyscan_t scanner, const char *s);
 
 struct cmds *cmds_head = NULL;
 int background = 0;
 
 %}
 
+%define api.pure full
+%define api.value.type {char *}
+%define parse.error custom
 %locations
+%param { yyscan_t scanner }
+%code requires {
+  typedef void* yyscan_t;
+}
 %token
 INPUT_REDIRECT
 OUTPUT_REDIRECT
@@ -187,31 +200,45 @@ static void set_output_redirect(const char *filename)
   cmds_curr->output_file = strdup(filename);
 }
 
-static void yyerror(const char *s)
+static void yyerror(YYLTYPE *locp, yyscan_t UNUSED(scanner), const char *s)
 {
-  switch (yychar) {
-    case INPUT_REDIRECT:
-      fprintf(stderr, "invalid < in command (column %d)\n",
-              yylloc.first_column);
-      break;
-    case OUTPUT_REDIRECT:
-      fprintf(stderr, "invalid > in command (column %d)\n",
-              yylloc.first_column);
-      break;
-    case PIPE:
-      fprintf(stderr, "invalid | in command (column %d)\n",
-              yylloc.first_column);
-      break;
-    case BACKGROUND:
-      fprintf(stderr, "invalid & in command (column %d)\n",
-              yylloc.first_column);
-      break;
-    case REST:
-      fprintf(stderr, "character \"%s\" not allowed (column %d)\n",
-              yylval, yylloc.first_column);
-      break;
-    default:
-      fprintf(stderr, "%s: Invalid command (column %d)\n",
-              s, yylloc.first_column);
+  fprintf(stderr, "%s: Invalid command (column %d)\n",
+          s, locp->first_column);
+}
+
+static int
+yyreport_syntax_error (const yypcontext_t *ctx, yyscan_t scanner)
+{
+  yypcontext_expected_tokens(ctx, NULL, 0);
+
+  YYLTYPE *locp = yypcontext_location(ctx);
+  yysymbol_kind_t lookahead = yypcontext_token(ctx);
+
+  switch (lookahead) {
+  case YYSYMBOL_INPUT_REDIRECT:
+    fprintf(stderr, "invalid < in command (column %d)\n",
+            locp->first_column);
+    break;
+  case YYSYMBOL_OUTPUT_REDIRECT:
+    fprintf(stderr, "invalid > in command (column %d)\n",
+            locp->first_column);
+    break;
+  case YYSYMBOL_PIPE:
+    fprintf(stderr, "invalid | in command (column %d)\n",
+            locp->first_column);
+    break;
+  case YYSYMBOL_BACKGROUND:
+    fprintf(stderr, "invalid & in command (column %d)\n",
+            locp->first_column);
+    break;
+  case YYSYMBOL_REST:
+    fprintf(stderr, "character \"%s\" not allowed (column %d)\n",
+            *yyget_lval(scanner), locp->first_column);
+    break;
+  default:
+    fprintf(stderr, "syntax error: Invalid command (column %d)\n",
+            locp->first_column);
   }
+
+  return 0;
 }

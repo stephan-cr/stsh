@@ -23,7 +23,7 @@
 %{
 
 #include <string.h>
-#define YYSTYPE char *
+
 #include "y.tab.h"
 
 /* don't generate yyunput() (avoid warnings)
@@ -34,22 +34,23 @@
 int pipe_last = 1;
 
 /* https://stackoverflow.com/a/22125500/13713769 */
-#define YY_USER_ACTION                           \
-  do {                                           \
-    yylloc.first_line = yylloc.last_line;        \
-    yylloc.first_column = yylloc.last_column;    \
-    for (size_t i = 0; yytext[i] != '\0'; i++) { \
-      if (yytext[i] == '\n') {                   \
-        yylloc.last_line++;                      \
-        yylloc.last_column = 0;                  \
-      } else {                                   \
-        yylloc.last_column++;                    \
-      }                                          \
-    }                                            \
+#define YY_USER_ACTION                             \
+  do {                                             \
+    yylloc->first_line = yylloc->last_line;        \
+    yylloc->first_column = yylloc->last_column;    \
+    for (size_t i = 0; yytext[i] != '\0'; i++) {   \
+      if (yytext[i] == '\n') {                     \
+        yylloc->last_line++;                       \
+        yylloc->last_column = 0;                   \
+      } else {                                     \
+        yylloc->last_column++;                     \
+      }                                            \
+    }                                              \
   } while (0);
 
 %}
 
+%option reentrant bison-bridge bison-locations
 %option yylineno
 
 valid_chars [A-Za-z0-9\./\-+@,_%=]
@@ -64,7 +65,7 @@ valid_chars [A-Za-z0-9\./\-+@,_%=]
 			return(NEWLINE);
 		}
 {valid_chars}+	{
-			yylval = yytext;
+			*yylval = yytext;
 			if (pipe_last) {
 				pipe_last = 0;
 				return(COMMAND_NAME);
@@ -75,5 +76,5 @@ valid_chars [A-Za-z0-9\./\-+@,_%=]
 \>		{ return(OUTPUT_REDIRECT); }
 \|		{ pipe_last = 1; return(PIPE); }
 \&		{ return(BACKGROUND); }
-.		{ yylval = yytext; return(REST); }
+.		{ *yylval = yytext; return(REST); }
 %%

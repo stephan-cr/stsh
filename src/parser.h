@@ -22,7 +22,7 @@
 #ifndef PARSER_H
 #define PARSER_H
 
-#include "execute.h"
+struct cmds; /* forward declaration */
 
 extern struct cmds *cmds_head;
 extern int background;

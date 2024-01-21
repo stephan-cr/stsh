@@ -19,6 +19,9 @@
  * The GNU General Public License is contained in the file COPYING.
  */
 
+#include "execute.h"
+#include "misc.h"
+
 #include <fcntl.h>
 #define __USE_XOPEN
 #define __USE_XOPEN_EXTENDED
@@ -26,8 +29,6 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include "execute.h"
-#include "misc.h"
 
 static void wait_foreground(const pid_t pid)
 {

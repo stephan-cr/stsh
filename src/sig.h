@@ -22,10 +22,6 @@
 #ifndef SIG_H
 #define SIG_H
 
-#ifndef NULL
-#define NULL ((void *) 0)
-#endif
-
 void mask_sigchld();
 void unmask_sigchld();
 void install_sighandler();

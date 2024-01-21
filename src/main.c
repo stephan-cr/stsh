@@ -27,7 +27,9 @@
 #include "misc.h"
 #include "parser.h"
 #include "sig.h"
+
 #include "y.tab.h"
+#include "lexer.h"
 
 #define PROMPT "stsh [%d]> "
 
@@ -56,12 +58,15 @@ int main(int UNUSED(argc), char **UNUSED(argv))
   yydebug = 1;
 #endif
 
+  yyscan_t scanner;
+  yylex_init(&scanner);
+
   install_sighandler();
   cmds_head = NULL;
   for (;;) {
     printf(PROMPT, c);
     (void)fflush(stdout);
-    ret = yyparse();
+    ret = yyparse(scanner);
     if ((ret == 0) && (cmds_head != NULL)) {
       c++;
       if (strcmp(cmds_head->name, "exit") == 0) break;
@@ -72,5 +77,7 @@ int main(int UNUSED(argc), char **UNUSED(argv))
     free_cmds_head(cmds_head);
     cmds_head = NULL;
   }
+
+  yylex_destroy(scanner);
   return 0;
 }
