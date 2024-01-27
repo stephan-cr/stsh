@@ -36,11 +36,10 @@ endif ()
 bison_target(parser src/parser.y
   ${CMAKE_CURRENT_BINARY_DIR}/y.tab.c
   COMPILE_FLAGS "${bison_compile_flags}")
-# "--nounput" is for a cleaner compilation, but not all versions of flex support
-# it
+
 flex_target(lexer src/lexer.l
   ${CMAKE_CURRENT_BINARY_DIR}/lexer.c
-  COMPILE_FLAGS "--warn --nounput -X -Cr -DYY_NO_INPUT"
+  COMPILE_FLAGS "--warn -X -Cr"
   DEFINES_FILE ${CMAKE_CURRENT_BINARY_DIR}/lexer.h)
 add_flex_bison_dependency(lexer parser)
 

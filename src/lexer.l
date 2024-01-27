@@ -26,11 +26,6 @@
 
 #include "y.tab.h"
 
-/* don't generate yyunput() (avoid warnings)
- * (some versions of flex need it)
- */
-#define YY_NO_UNPUT
-
 int pipe_last = 1;
 
 /* https://stackoverflow.com/a/22125500/13713769 */
@@ -50,6 +45,9 @@ int pipe_last = 1;
 
 %}
 
+%option noinput
+%option nounput
+%option noyywrap
 %option reentrant bison-bridge bison-locations
 %option yylineno
 
