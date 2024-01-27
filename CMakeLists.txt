@@ -18,9 +18,9 @@
 #
 # The GNU General Public License is contained in the file COPYING.
 
-cmake_minimum_required(VERSION 2.8.12 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.5)
 
-project(stsh C)
+project(stsh LANGUAGES C)
 
 option(BISON_DEBUG "enable bison debug tracing" OFF)
 
@@ -40,19 +40,15 @@ bison_target(parser src/parser.y
 # it
 flex_target(lexer src/lexer.l
   ${CMAKE_CURRENT_BINARY_DIR}/lexer.c
-  COMPILE_FLAGS "--nounput -X -Cr -DYY_NO_INPUT --header-file=${CMAKE_CURRENT_BINARY_DIR}/lexer.h")
+  COMPILE_FLAGS "--warn --nounput -X -Cr -DYY_NO_INPUT"
+  DEFINES_FILE ${CMAKE_CURRENT_BINARY_DIR}/lexer.h)
 add_flex_bison_dependency(lexer parser)
-
-include_directories(${CMAKE_SOURCE_DIR}/src)
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 # support for dietlibc
 if (DEFINED DIET)
-set(CMAKE_C_COMPILER "diet")
-set(CMAKE_C_FLAGS "gcc")
-endif (DEFINED DIET)
-
-add_definitions(-Wall -Wextra -Wconversion -Wno-unused-result -Werror -O2 -pipe)
+  set(CMAKE_C_COMPILER "diet")
+  set(CMAKE_C_FLAGS "gcc")
+endif ()
 
 add_executable(stsh
   src/execute.c
@@ -63,6 +59,13 @@ add_executable(stsh
   ${FLEX_lexer_OUTPUTS})
 target_link_libraries(stsh
   ${FLEX_LIBRARIES})
+target_include_directories(stsh
+  PRIVATE
+  ${CMAKE_SOURCE_DIR}/src
+  ${CMAKE_CURRENT_BINARY_DIR})
+target_compile_options(stsh
+  PRIVATE
+  -Wall -Wextra -Wconversion -Wno-unused-result -Werror -O2 -pipe)
 
 # CPack configuration
 set(CPACK_GENERATOR "DEB")
