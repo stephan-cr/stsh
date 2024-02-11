@@ -76,7 +76,7 @@ NEWLINE
 %%
 S   : first_command NEWLINE { YYACCEPT; }
     | %empty
-    | error { cleanup(); YYABORT; }
+    | error NEWLINE { cleanup(); YYABORT; }
     ;
 
 first_command : command
