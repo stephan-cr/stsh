@@ -24,7 +24,7 @@ project(stsh LANGUAGES C)
 
 option(BISON_DEBUG "enable bison debug tracing" OFF)
 
-find_package(BISON REQUIRED)
+find_package(BISON 3.6 REQUIRED)
 find_package(FLEX REQUIRED)
 
 if (BISON_DEBUG)
