@@ -33,8 +33,6 @@
 
 #define PROMPT "stsh [%d]> "
 
-extern int yyparse();
-
 static void free_cmds_head(struct cmds *head)
 {
   struct cmds *tmp;
