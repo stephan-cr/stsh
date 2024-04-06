@@ -240,5 +240,10 @@ yyreport_syntax_error (const yypcontext_t *ctx, yyscan_t scanner)
             locp->first_column);
   }
 
+  if (lookahead != YYSYMBOL_YYEMPTY)
+    fprintf(stderr, "at column %d: unexpected token: %s\n",
+            locp->first_column,
+            yysymbol_name(lookahead));
+
   return 0;
 }
