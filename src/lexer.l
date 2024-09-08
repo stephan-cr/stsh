@@ -26,8 +26,6 @@
 
 #include "y.tab.h"
 
-int pipe_last = 1;
-
 /* https://stackoverflow.com/a/22125500/13713769 */
 #define YY_USER_ACTION                             \
   do {                                             \
@@ -53,26 +51,33 @@ int pipe_last = 1;
 
 valid_chars [A-Za-z0-9\./\-+@,_%=]
 
+%s PARAMETER_STATE
+
 %%
 
 [ \t]+		/* ignore whitespace */;
 #.*		/* ignore comments */
 \n		{
 			/* reset state before we finish */
-			pipe_last = 1;
+      BEGIN(INITIAL);
 			return(NEWLINE);
-		}
-{valid_chars}+	{
-			*yylval = yytext;
-			if (pipe_last) {
-				pipe_last = 0;
-				return(COMMAND_NAME);
-			}
-			return(PARAMETER);
-		}
+}
+<INITIAL>{
+  {valid_chars}+ {
+    *yylval = yytext;
+    BEGIN(PARAMETER_STATE);
+    return(COMMAND_NAME);
+  }
+}
+<PARAMETER_STATE>{
+  {valid_chars}+ {
+    *yylval = yytext;
+    return(PARAMETER);
+  }
+}
 \<		{ return(INPUT_REDIRECT); }
 \>		{ return(OUTPUT_REDIRECT); }
-\|		{ pipe_last = 1; return(PIPE); }
+\|		{ BEGIN(INITIAL); return(PIPE); }
 \&		{ return(BACKGROUND); }
 .		{ *yylval = yytext; return(REST); }
 %%
