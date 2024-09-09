@@ -1,6 +1,6 @@
 /* -*- mode: c -*- */
 /*
- * Copyright (C) 2005, 2011 Stephan Creutz
+ * Copyright (C) 2005, 2011-2024 Stephan Creutz
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -55,12 +55,12 @@ valid_chars [A-Za-z0-9\./\-+@,_%=]
 
 %%
 
-[ \t]+		/* ignore whitespace */;
-#.*		/* ignore comments */
-\n		{
-			/* reset state before we finish */
-      BEGIN(INITIAL);
-			return(NEWLINE);
+[ \t]+    /* ignore whitespace */
+#.*       /* ignore comments */
+\n {
+  /* reset state before we finish */
+  BEGIN(INITIAL);
+  return(NEWLINE);
 }
 <INITIAL>{
   {valid_chars}+ {
@@ -75,9 +75,9 @@ valid_chars [A-Za-z0-9\./\-+@,_%=]
     return(PARAMETER);
   }
 }
-\<		{ return(INPUT_REDIRECT); }
-\>		{ return(OUTPUT_REDIRECT); }
-\|		{ BEGIN(INITIAL); return(PIPE); }
-\&		{ return(BACKGROUND); }
-.		{ *yylval = yytext; return(REST); }
+\<    { return(INPUT_REDIRECT); }
+\>    { return(OUTPUT_REDIRECT); }
+\|    { BEGIN(INITIAL); return(PIPE); }
+\&    { return(BACKGROUND); }
+.     { *yylval = yytext; return(REST); }
 %%
