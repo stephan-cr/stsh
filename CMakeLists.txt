@@ -18,7 +18,7 @@
 #
 # The GNU General Public License is contained in the file COPYING.
 
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 
 project(stsh LANGUAGES C)
 
