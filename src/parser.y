@@ -50,7 +50,7 @@ int background = 0;
 %}
 
 %define api.pure full
-%define api.value.type {char *}
+%define api.value.type {const char *}
 %define parse.error custom
 %locations
 %param { yyscan_t scanner }
@@ -76,7 +76,7 @@ NEWLINE
 %%
 S   : first_command NEWLINE { YYACCEPT; }
     | %empty
-    | error NEWLINE { cleanup(); YYABORT; }
+    | error NEWLINE { (void) yynerrs; cleanup(); YYABORT; }
     ;
 
 first_command : command
