@@ -1,0 +1,29 @@
+{
+    "version": 2,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 20,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "musl",
+            "displayName": "Musl Config",
+            "description": "Musl build using Ninja generator",
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/build_musl",
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": {
+                    "value": "musl-gcc"
+                },
+                "CMAKE_C_COMPILER_LAUNCHER": {
+                    "value": "sccache"
+                },
+                "CMAKE_EXPORT_COMPILE_COMMANDS": {
+                    "type": "BOOL",
+                    "value": "ON"
+                }
+            }
+        }
+    ]
+}
