@@ -43,12 +43,6 @@ flex_target(lexer src/lexer.l
   DEFINES_FILE ${CMAKE_CURRENT_BINARY_DIR}/lexer.h)
 add_flex_bison_dependency(lexer parser)
 
-# support for dietlibc
-if (DEFINED DIET)
-  set(CMAKE_C_COMPILER "diet")
-  set(CMAKE_C_FLAGS "gcc")
-endif ()
-
 add_executable(stsh
   src/execute.c
   src/main.c
