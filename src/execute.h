@@ -27,8 +27,8 @@
 #define MAX_PARAM 255
 
 struct cmds {
-  char *name;
-  char *parameter_list[MAX_PARAM];
+  const char *name;
+  const char *parameter_list[MAX_PARAM];
   int num_params;
   const char *input_file, *output_file;
   struct cmds *next;

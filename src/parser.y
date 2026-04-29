@@ -135,9 +135,8 @@ static void cleanup()
   int i;
   while (cmds_head != NULL) {
     p = cmds_head;
-    if (p->name != NULL) free(p->name);
     for (i = 0; i < cmds_head->num_params; i++) {
-      free(cmds_head->parameter_list[i]);
+      free((char*)cmds_head->parameter_list[i]);
     }
     cmds_head = cmds_head->next;
     free(p);
@@ -167,7 +166,7 @@ static void add_cmd(const char *name)
     cmds_head = mem;
     p = cmds_head;
   }
-  p->name = strdup(name);
+  p->name = name;
   p->num_params = 0;
   p->input_file = NULL;
   p->output_file = NULL;
@@ -182,7 +181,7 @@ static void add_param(const char *p)
     fprintf(stderr, "too much parameters\n");
     exit(1);
   }
-  cmds_curr->parameter_list[cmds_curr->num_params++] = strdup(p);
+  cmds_curr->parameter_list[cmds_curr->num_params++] = p;
 }
 
 static void set_background()
@@ -192,12 +191,12 @@ static void set_background()
 
 static void set_input_redirect(const char *filename)
 {
-  cmds_curr->input_file = strdup(filename);
+  cmds_curr->input_file = filename;
 }
 
 static void set_output_redirect(const char *filename)
 {
-  cmds_curr->output_file = strdup(filename);
+  cmds_curr->output_file = filename;
 }
 
 static void yyerror(YYLTYPE *locp, yyscan_t UNUSED(scanner), const char *s)

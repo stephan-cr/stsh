@@ -39,9 +39,8 @@ static void free_cmds_head(struct cmds *head)
   int i;
   while (head != NULL) {
     tmp = head;
-    if (head->name != NULL) free(head->name);
     for (i = 0; i < head->num_params; i++) {
-      free(head->parameter_list[i]);
+      free((char*)head->parameter_list[i]);
     }
     head = head->next;
     free(tmp);

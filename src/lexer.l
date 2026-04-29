@@ -22,6 +22,7 @@
 
 %{
 
+#include <stddef.h>
 #include <string.h>
 
 #include "y.tab.h"
@@ -64,14 +65,14 @@ valid_chars [A-Za-z0-9\./\-+@,_%=]
 }
 <INITIAL>{
   {valid_chars}+ {
-    *yylval = yytext;
+    *yylval = strndup(yytext, (size_t)yyleng);
     BEGIN(PARAMETER_STATE);
     return(COMMAND_NAME);
   }
 }
 <PARAMETER_STATE>{
   {valid_chars}+ {
-    *yylval = yytext;
+    *yylval = strndup(yytext, (size_t)yyleng);
     return(PARAMETER);
   }
 }
@@ -79,5 +80,5 @@ valid_chars [A-Za-z0-9\./\-+@,_%=]
 \>    { return(OUTPUT_REDIRECT); }
 \|    { BEGIN(INITIAL); return(PIPE); }
 \&    { return(BACKGROUND); }
-.     { *yylval = yytext; return(REST); }
+.     { *yylval = strndup(yytext, (size_t)yyleng); return(REST); }
 %%

@@ -96,7 +96,7 @@ void execute(const struct cmds *cmd, const int background)
           }
         }
 
-        (void)execvp(curr_cmd->name, curr_cmd->parameter_list);
+        (void)execvp(curr_cmd->name, (char**)curr_cmd->parameter_list);
         die_perror("execvp");
       default:
         /* Parent */
