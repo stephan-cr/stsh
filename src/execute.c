@@ -55,8 +55,10 @@ void execute(const struct cmds *cmd, const int background)
     }
 
     if (curr_cmd->output_file != NULL) {
+      int extra_flag = O_TRUNC;
+      if (curr_cmd->output_append) extra_flag = O_APPEND;
       out_fd = open(curr_cmd->output_file,
-        O_CREAT | O_WRONLY | O_TRUNC,
+        O_CREAT | O_WRONLY | extra_flag,
         S_IRUSR | S_IWUSR);
       if (out_fd == -1) die_perror("open output file");
     }

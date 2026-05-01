@@ -78,6 +78,7 @@ valid_chars [A-Za-z0-9\./\-+@,_%=]
 }
 \<    { return(INPUT_REDIRECT); }
 \>    { return(OUTPUT_REDIRECT); }
+\>\>  { return(OUTPUT_APPEND_REDIRECT); }
 \|    { BEGIN(INITIAL); return(PIPE); }
 \&    { return(BACKGROUND); }
 .     { *yylval = strndup(yytext, (size_t)yyleng); return(REST); }

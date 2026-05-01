@@ -29,6 +29,7 @@
 #include "y.tab.h"
 #include "lexer.h"
 
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -41,7 +42,7 @@ static void add_cmd(const char *name);
 static void add_param(const char *p);
 static void set_background();
 static void set_input_redirect(const char *filename);
-static void set_output_redirect(const char *filename);
+static void set_output_redirect(const char *filename, bool append);
 static void yyerror(YYLTYPE *locp, yyscan_t scanner, const char *s);
 
 struct cmds *cmds_head = NULL;
@@ -60,6 +61,7 @@ int background = 0;
 %token
 INPUT_REDIRECT
 OUTPUT_REDIRECT
+OUTPUT_APPEND_REDIRECT
 PIPE
 BACKGROUND
 PARAMETER
@@ -83,8 +85,10 @@ first_command : command
     | command background
     | command input_redirect
     | command output_redirect
+    | command output_append_redirect
     | command input_redirect background
     | command output_redirect background
+    | command output_append_redirect background
     | command input_redirect output_redirect
     | command input_redirect output_redirect background
     | command output_redirect input_redirect
@@ -113,7 +117,10 @@ parameter_list  : PARAMETER { add_param($1); }
 input_redirect  : INPUT_REDIRECT PARAMETER { set_input_redirect($2); }
     ;
 
-output_redirect : OUTPUT_REDIRECT PARAMETER { set_output_redirect($2); }
+output_redirect : OUTPUT_REDIRECT PARAMETER { set_output_redirect($2, false); }
+    ;
+
+output_append_redirect : OUTPUT_APPEND_REDIRECT PARAMETER { set_output_redirect($2, true); }
     ;
 
 background  : BACKGROUND { set_background(); }
@@ -170,6 +177,7 @@ static void add_cmd(const char *name)
   p->num_params = 0;
   p->input_file = NULL;
   p->output_file = NULL;
+  p->output_append = false;
   p->next = NULL;
   cmds_curr = p;
   add_param(name);
@@ -194,9 +202,10 @@ static void set_input_redirect(const char *filename)
   cmds_curr->input_file = filename;
 }
 
-static void set_output_redirect(const char *filename)
+static void set_output_redirect(const char *filename, bool append)
 {
   cmds_curr->output_file = filename;
+  cmds_curr->output_append = append;
 }
 
 static void yyerror(YYLTYPE *locp, yyscan_t UNUSED(scanner), const char *s)

@@ -22,6 +22,8 @@
 #ifndef EXECUTE_H
 #define EXECUTE_H
 
+#include <stdbool.h>
+
 #include <sys/types.h>
 
 #define MAX_PARAM 255
@@ -31,6 +33,7 @@ struct cmds {
   const char *parameter_list[MAX_PARAM];
   int num_params;
   const char *input_file, *output_file;
+  bool output_append;
   struct cmds *next;
 };
 
