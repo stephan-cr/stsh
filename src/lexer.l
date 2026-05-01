@@ -75,6 +75,11 @@ valid_chars [A-Za-z0-9\./\-+@,_%=]
     *yylval = strndup(yytext, (size_t)yyleng);
     return(PARAMETER);
   }
+
+  \"[^\"]*\"|\'[^\']*\' {
+    *yylval = strndup(yytext + 1, (size_t)yyleng - 2);
+    return(PARAMETER);
+  }
 }
 \<    { return(INPUT_REDIRECT); }
 \>    { return(OUTPUT_REDIRECT); }
