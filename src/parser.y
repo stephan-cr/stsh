@@ -59,15 +59,15 @@ int background = 0;
   typedef void* yyscan_t;
 }
 %token
-INPUT_REDIRECT
-OUTPUT_REDIRECT
-OUTPUT_APPEND_REDIRECT
-PIPE
-BACKGROUND
-PARAMETER
-COMMAND_NAME
+INPUT_REDIRECT "<"
+OUTPUT_REDIRECT ">"
+OUTPUT_APPEND_REDIRECT ">>"
+PIPE "|"
+BACKGROUND "&"
+PARAMETER "<parameter>"
+COMMAND_NAME "<command>"
 REST
-NEWLINE
+NEWLINE "<newline>"
 
 %initial-action
 {
